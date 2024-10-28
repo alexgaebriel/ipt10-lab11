@@ -74,13 +74,16 @@ class DatabaseConnection
     public function connect()
     {
         try {
-            // PDO(DSN, DATABASE_USERNAME, DATABASE_PASSWORD)
-            $this->connection = new PDO($this->dsn, $this->user, $this->password);
+            $this
+            ->connection = new PDO($this->dsn, $this->user, $this->password);
+            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Enable exceptions for error reporting
             return $this->connection;
         } catch (Exception $e) {
-            error_log($e->getMessage());
+            error_log("Connection error: " . $e->getMessage());
+            echo "Failed to connect to the database."; // Display a user-friendly message
+            exit; // Exit the script if connection fails
         }
 
         return null;
     }
-}
+}    
